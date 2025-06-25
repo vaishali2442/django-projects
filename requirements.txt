@@ -2,3 +2,4 @@ python-dotenv
 Django==5.0
 psycopg2-binary
 mysqlclient
+djangorestframework
