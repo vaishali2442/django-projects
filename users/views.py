@@ -39,13 +39,13 @@ def mapUser(request):
         data = request.data
         roleName = data.get('role_name')
         user_id = data.get('user_id')
-        grade_id = data.get('grade_id')
-        section_id = data.get('section_id')
+        grade_name = data.get('grade_name')
+        section_name = data.get('section_name')
         if roleName == 'teacher':
             teacherData  = teacherdetails.objects.create(
                 teacher_id=user_id,
-                grade_name =grade_id,
-                section_name=section_id,
+                grade_name =grade_name,
+                section_name=section_name,
                 created_at=timezone.now(),
                 updated_at=timezone.now()
             )
@@ -53,8 +53,8 @@ def mapUser(request):
         if roleName == 'student':
             studentData  = studentdetails.objects.create(
                 student_id=user_id,
-                grade_name =grade_id,
-                section_name=section_id,
+                grade_name =grade_name,
+                section_name=section_name,
                 created_at=timezone.now(),
                 updated_at=timezone.now()
             )
@@ -98,7 +98,7 @@ def createRole(request):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = RoleSerializer(data = request.data)
-        if serializer.is_valid:
+        if serializer.is_valid():
             serializer.save()
             return Response({
             'status': 201,
@@ -120,7 +120,7 @@ def createRole(request):
 @api_view(['PUT'])
 def updateRole(request):
     try:
-        role_id = request.query_param.get('role_id')
+        role_id = request.query_params.get('role_id')
         if not request.data:
             return Response({
                 'status': 400,
@@ -135,7 +135,7 @@ def updateRole(request):
         }, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = RoleSerializer(roleInstance, data = request.data)
-        if serializer.is_valid:
+        if serializer.is_valid():
             serializer.save()
             return Response({
             'status': 201,
@@ -157,7 +157,7 @@ def updateRole(request):
 @api_view(['GET'])
 def getRole(request):
     try:
-        role_id = request.query_param.get('role_id')
+        role_id = request.query_params.get('role_id')
         if role_id:
             roleInstance = roles.objects.filter(role_id=role_id).first()
             serializer = RoleSerializer(roleInstance)
@@ -165,13 +165,13 @@ def getRole(request):
                 'status': 200,
                 'message': 'Role data found successfully',
                 'result' : serializer.data
-                }, status=status.HTTP_201_OK)
+                }, status=status.HTTP_200_OK)
         else:
             roleInstance = roles.objects.all()
             if not roleInstance.exists():
                 return Response({
                     'status': 400,
-                    'message': f'Cannot find data',
+                    'message': f'No data available',
                 }, status=status.HTTP_400_BAD_REQUEST)
 
             serializer = RoleSerializer(roleInstance,many=True)
@@ -180,7 +180,7 @@ def getRole(request):
                     'status': 200,
                     'message': 'Role data found successfully',
                     'result' : serializer.data
-                    }, status=status.HTTP_201_OK)
+                    }, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({
             'status': 500,
@@ -192,8 +192,8 @@ def getRole(request):
 @api_view(['DELETE'])
 def deleteRole(request):
     try:
-        role_id = request.query_param.get('role_id')
-        if not request.data:
+        role_id = request.query_params.get('role_id')
+        if not role_id:
             return Response({
                 'status': 400,
                 'message': 'Please Provide role id'
@@ -293,13 +293,13 @@ def getUsers(request):
         user_id = request.query_params.get('user_id')
         if user_id:
             userInstance = users.objects.filter(user_id=user_id).first()
-            serializer = RoleSerializer(userInstance)
+            serializer = UserSerializer(userInstance)
             if serializer.data:
                 return Response({
                     'status': 200,
                     'message': 'user data found successfully',
                     'result' : serializer.data
-                    }, status=status.HTTP_201_OK)
+                    }, status=status.HTTP_200_OK)
         else:
             userInstance = users.objects.all()
             if not userInstance.exists():
@@ -308,13 +308,13 @@ def getUsers(request):
                     'message': f'Cannot find data',
                 }, status=status.HTTP_400_BAD_REQUEST)
 
-            serializer = RoleSerializer(userInstance,many=True)
+            serializer = UserSerializer(userInstance, many=True)
             if serializer.data:
                 return Response({
                     'status': 200,
                     'message': 'user data found successfully',
                     'result' : serializer.data
-                    }, status=status.HTTP_201_OK)
+                    }, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({
             'status': 500,

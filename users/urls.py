@@ -13,6 +13,7 @@ urlpatterns = [
     path('users/update/', views.updateUsers, name='update_user'),
     path('users/', views.getUsers, name='get_users'),
     path('users/delete/', views.deleteUser, name='delete_user'),
+    path('users/map-user/', views.mapUser, name='map_user'),
 
     path('permissions/create/', views.createPermissions, name='create_permissions'),
     path('permissions/update/', views.updatePermissions, name='update_permissions'),
