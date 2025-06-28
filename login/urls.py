@@ -1,7 +1,6 @@
-from django.contrib import admin
 from django.urls import path
-from . import views
+from .views import MyTokenObtainPairView
 
 urlpatterns = [
-    path('login/', views.login),
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]

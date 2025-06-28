@@ -4,3 +4,4 @@ psycopg2-binary
 mysqlclient
 djangorestframework
 openpyxl
+djangorestframework_simplejwt

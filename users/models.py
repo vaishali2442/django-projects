@@ -18,6 +18,10 @@ class users(models.Model):
         return self.first_name or f"User {self.user_id}"
     class Meta:
         db_table = 'users'
+    
+    @property
+    def id(self):
+        return self.user_id
 
 
 class roles(models.Model):
