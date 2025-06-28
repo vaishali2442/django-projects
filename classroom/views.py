@@ -10,6 +10,7 @@ from .models import grade,section,studentdetails,teacherdetails,attendance
 from django.utils import timezone
 from .serializers import GradeSerializer, SectionSerializer,StudentDetailSerializer,TeacherDetailSerializer,attendanceSerializer
 from users.models import users
+
 class GradeView(APIView):
     def post(self,request):
         try:
